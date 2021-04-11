@@ -1,0 +1,16 @@
+{
+	"type": "sqlite",
+	"database": "dev.db",
+	"host": "localhost",
+	"name": "default",
+	"port": 5000,
+	"synchronize": false,
+	"logging": true,
+	"migrationsTableName": "custom_migration_table",
+	"entities": ["src/api/models/**/*.ts"],
+	"migrations": ["src/api/migrations/*.ts"],
+	"cli": {
+		"entitiesDir": "src/api/models",
+		"migrationsDir": "src/api/migrations"
+	}
+}
