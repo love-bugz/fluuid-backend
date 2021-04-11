@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
+import { compose } from 'compose-middleware';
 
 // DATABASE CONNECTION
 import { connect } from './api/db';
@@ -23,9 +24,10 @@ app.get('/', (_req, res) => {
 const AppRoutes = [...UserRoutes];
 
 AppRoutes.forEach(route => {
-	(app as any)[route.method](route.path, (req: Request, res: Response, next: NextFunction) => {
+	//@ts-ignore
+	(app as any)[route.method](route.path, compose(route.middleware), (req: Request, res: Response, next: NextFunction) => {
 		route
-			.action(req, res)
+			.action(req, res, next)
 			.then(() => next)
 			.catch(err => next(err));
 	});

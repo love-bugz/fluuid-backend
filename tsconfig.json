@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"typeRoots": ["./node_modules/@types", "./api/types/"],
+		"typeRoots": ["src/types"],
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"resolveJsonModule": true,
@@ -12,12 +12,15 @@
 		"noImplicitAny": true,
 		"moduleResolution": "node",
 		"sourceMap": true,
-		"outDir": "dist",
 		"rootDir": "src",
 		"baseUrl": ".",
 		"paths": {
 			"*": ["node_modules/*"]
 		}
 	},
-	"include": ["src/**/*"]
+	"include": ["src"],
+	"compileOnSave": true,
+	"rules": {
+		"no-unused-vars": "off"
+	}
 }

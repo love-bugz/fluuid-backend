@@ -1,21 +1,22 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { Length, IsAlphanumeric, IsDate } from 'class-validator';
+import { Length, IsAlphanumeric } from 'class-validator';
 
 @Entity('users')
 export class User extends BaseEntity {
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn('uuid')
 	id: string;
+
+	@Column({ unique: true })
+	emailId: string;
 
 	@Column({ unique: true })
 	@IsAlphanumeric()
 	@Length(5, 25)
 	handle: string;
 
-	@Column()
-	@IsDate()
+	@Column({ type: 'datetime', default: () => 'date("now")' })
 	createdAt: string;
 
-	@Column()
-	@IsDate()
+	@Column({ type: 'datetime', default: () => 'date("now")' })
 	updatedAt: string;
 }
