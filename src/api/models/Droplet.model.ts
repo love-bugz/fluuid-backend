@@ -10,7 +10,6 @@ export class Droplet extends BaseEntity {
 		this.downVoteCount = 0;
 		this.replyCount = 0;
 	}
-
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
