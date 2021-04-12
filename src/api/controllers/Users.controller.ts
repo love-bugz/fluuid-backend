@@ -3,51 +3,53 @@ import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { User } from '../models/User.model';
 
-async function findAll(_req: Request, res: Response) {
-	const repository = getRepository(User);
-	const users = await repository.find();
-	res.status(200).json(users);
-}
+const userRepo = () => getRepository(User);
 
-async function findById(req: Request, res: Response) {
-	const repository = getRepository(User);
-	const user = await repository.findOne(req.params.id);
-	res.status(200).json(user);
-}
+export class UserController {
+	async findAll(_req: Request, res: Response) {
+		const users = await userRepo().find();
+		res.status(200).json(users);
+	}
 
-async function findByHandle(req: Request, res: Response) {
-	const repository = getRepository(User);
-	const user = await repository.findOne({ handle: req.params.handle });
-	res.status(200).json(user);
-}
+	async findById(req: Request, res: Response) {
+		const user = req.user;
+		res.status(200).json(user);
+	}
 
-async function findByEmailId(req: Request, res: Response) {
-	const repository = getRepository(User);
-	const user = await repository.findOne({ emailId: req.body.emailId });
-	if (user) {
+	async findByHandle(req: Request, res: Response) {
+		const user = req.user;
+		res.status(200).json(user);
+	}
+
+	async findByEmailId(req: Request, res: Response) {
+		const user = req.user;
 		res.status(200).json({ handle: user.handle });
-	} else {
-		res.status(404).json({ message: 'user not found' });
 	}
-}
 
-async function createUser(req: Request, res: Response, next: NextFunction) {
-	const repository = getRepository(User);
-	const { emailId, handle } = req.user;
-	const user = new User();
-	user.emailId = emailId;
-	user.handle = handle;
+	async createUser(req: Request, res: Response, next: NextFunction) {
+		const { emailId, handle } = req.user;
+		const user = new User();
+		user.emailId = emailId;
+		user.handle = handle;
 
-	try {
-		const errors = await validate(user);
-		if (errors.length > 0) next(errors);
-		else {
-			const savedUser = await repository.save(user);
-			res.status(201).json(savedUser);
+		try {
+			const errors = await validate(user);
+			if (errors.length > 0) next(errors);
+			else {
+				const savedUser = await userRepo().save(user);
+				res.status(201).json(savedUser);
+			}
+		} catch (err) {
+			next(err);
 		}
-	} catch (err) {
-		next(err);
+	}
+
+	async deleteUser(req: Request, res: Response) {
+		const user = new User();
+		user.id = req.user.id;
+		user.emailId = req.user.emailId;
+
+		await userRepo().remove(user);
+		res.status(200).json({ message: 'user deleted' });
 	}
 }
-
-export { findAll, findById, findByHandle, findByEmailId, createUser };

@@ -1,13 +1,13 @@
 import { ErrorRequestHandler } from 'express';
 import { ValidationError } from 'class-validator';
 import * as Yup from 'yup';
+import { NotFoundError } from './notFoundError';
+import { BadRequestError } from './badRequestError';
 
-export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 	let message: string;
-	console.error(err);
 	let error: string;
 	let status: number;
-	let details: string[] = [];
 
 	if (err instanceof Yup.ValidationError) {
 		if (err.errors.length > 0) message = err.errors[0];
@@ -15,44 +15,36 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 		error = 'Validation Error';
 	}
 
+	if (err instanceof NotFoundError || err instanceof BadRequestError) {
+		message = err.message;
+		status = err.status;
+		error = err.error;
+	}
+
 	for (let key in err) {
-		console.log('KEY', key, err[key]);
+		console.log('KEY', key, 'VALUE', err[key]); // FOR DEVELOPMENT
 		// class-validator ValidationError
 		if (err[key] instanceof ValidationError) {
 			if (Object.keys(err[key].constraints).length > 0) {
-				for (let i in err[key].constraints) {
-					details.push(err[key].constraints[i]);
-				}
+				const first = Object.keys(err[key].constraints)[0];
+				message = err[key].constraints[first];
 			}
 			status = 400;
-			if (details.length > 0) {
-				message = details[0];
-				details.pop();
-			}
 			error = 'Validation Error';
 		}
 
 		// SQLITE constraint
 		if (key === 'errno') {
-			if (err[key] === 19) {
-				error = 'SQL Constraint Error';
-				message = err.message;
-			}
+			error = 'SQL Error';
 		}
 	}
 
 	// @ts-ignore
-	status = status || 500;
+	status = status || err.statusCode || 500;
 	// @ts-ignore
-	message = message || 'Something went wrong';
+	message = message || err.message || 'Something went wrong';
 	// @ts-ignore
-	error = error || JSON.stringify(err); //change to "Undefined Error"
+	error = error || 'Undefined Error'; //change to "Undefined Error"
 
-	const response: ErrorResponse = { status, message, error };
-
-	res.status(status).json(response);
-};
-
-export type ErrorResponse = {
-	[key: string]: any;
+	res.status(status).json({ status, message, error });
 };

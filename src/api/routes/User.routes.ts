@@ -1,6 +1,7 @@
-import { createUser, findAll, findByEmailId, findByHandle, findById } from '../controllers/Users.controller';
+// import { createUser, deleteUser, findAll, findByEmailId, findByHandle, findById } from '../controllers/Users.controller';
+import { UserController } from '../controllers/Users.controller';
 import { beginLoggingMW } from '../middleware/Base.middleware';
-import { validateNewUser } from '../middleware/Users.middleware';
+import { isUser, validateNewUser } from '../middleware/Users.middleware';
 
 const BASE_PATH = '/users';
 
@@ -8,32 +9,38 @@ const UserRoutes = [
 	{
 		path: BASE_PATH + '/',
 		method: 'get',
-		action: findAll,
+		action: new UserController().findAll,
 		middleware: [beginLoggingMW],
 	},
 	{
-		path: BASE_PATH + '/id/:id',
+		path: BASE_PATH + '/id/',
 		method: 'get',
-		action: findById,
-		middleware: [beginLoggingMW],
+		action: new UserController().findById,
+		middleware: [beginLoggingMW, isUser],
 	},
 	{
 		path: BASE_PATH + '/emailId',
 		method: 'get',
-		action: findByEmailId,
-		middleware: [beginLoggingMW],
+		action: new UserController().findByEmailId,
+		middleware: [beginLoggingMW, isUser],
 	},
 	{
-		path: BASE_PATH + '/handle/:handle',
+		path: BASE_PATH + '/handle/',
 		method: 'get',
-		action: findByHandle,
-		middleware: [beginLoggingMW],
+		action: new UserController().findByHandle,
+		middleware: [beginLoggingMW, isUser],
 	},
 	{
 		path: BASE_PATH + '/',
 		method: 'post',
-		action: createUser,
+		action: new UserController().createUser,
 		middleware: [beginLoggingMW, validateNewUser],
+	},
+	{
+		path: BASE_PATH + '/',
+		method: 'delete',
+		action: new UserController().deleteUser,
+		middleware: [beginLoggingMW, isUser],
 	},
 ];
 
