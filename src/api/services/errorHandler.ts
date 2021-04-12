@@ -7,17 +7,17 @@ import { BadRequestError } from './badRequestError';
 export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 	let message: string;
 	let error: string;
-	let status: number;
+	let statusCode: number;
 
 	if (err instanceof Yup.ValidationError) {
 		if (err.errors.length > 0) message = err.errors[0];
-		status = 400;
+		statusCode = 400;
 		error = 'Validation Error';
 	}
 
 	if (err instanceof NotFoundError || err instanceof BadRequestError) {
 		message = err.message;
-		status = err.status;
+		statusCode = err.statusCode;
 		error = err.error;
 	}
 
@@ -29,7 +29,7 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 				const first = Object.keys(err[key].constraints)[0];
 				message = err[key].constraints[first];
 			}
-			status = 400;
+			statusCode = 400;
 			error = 'Validation Error';
 		}
 
@@ -39,7 +39,7 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 		}
 
 		if (key === 'statusCode') {
-			status = err[key];
+			statusCode = err[key];
 		}
 
 		if (key === 'message' && !message) {
@@ -48,11 +48,11 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 	}
 
 	// @ts-ignore
-	status = status || 500;
+	statusCode = statusCode || 500;
 	// @ts-ignore
 	message = message || 'Something went wrong';
 	// @ts-ignore
 	error = error || 'Undefined Error'; //change to "Undefined Error"
 
-	res.status(status).json({ status, message, error });
+	res.status(statusCode).json({ statusCode, message, error });
 };
