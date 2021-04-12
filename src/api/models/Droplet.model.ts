@@ -23,7 +23,7 @@ export class Droplet extends BaseEntity {
 	@IsUrl()
 	audioTrack: string;
 
-	@Column({ type: 'timestamp', default: () => 'date("now")' })
+	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
 	createdAt: string;
 
 	@Column()
