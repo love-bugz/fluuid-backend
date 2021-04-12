@@ -7,10 +7,10 @@
 	"synchronize": false,
 	"logging": true,
 	"migrationsTableName": "custom_migration_table",
-	"entities": ["src/api/models/**/*.ts"],
-	"migrations": ["src/api/migrations/*.ts"],
+	"entities": ["dist/api/models/**/*.js"],
+	"migrations": ["dist/api/migrations/*.js"],
 	"cli": {
-		"entitiesDir": "src/api/models",
-		"migrationsDir": "src/api/migrations"
+		"entitiesDir": "dist/api/models",
+		"migrationsDir": "dist/api/migrations"
 	}
 }
