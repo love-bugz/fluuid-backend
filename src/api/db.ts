@@ -14,8 +14,8 @@ export const connect = async () => {
 				ssl: { rejectUnauthorized: false },
 			},
 			migrationsTableName: 'custom_migration_table',
-			entities: [__dirname + '/models/*.model.ts'],
-			migrations: [__dirname + '/migrations/*.ts'],
+			entities: [__dirname + '/models/*.model.js'],
+			migrations: [__dirname + '/migrations/*.js'],
 			cli: {
 				entitiesDir: __dirname + './models/',
 				migrationsDir: __dirname + './migrations/',
