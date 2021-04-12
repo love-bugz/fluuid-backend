@@ -1,9 +1,16 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsString, Length, IsInt, IsUrl, IsBoolean } from 'class-validator';
 import { User } from './User.model';
 
 @Entity('droplets')
 export class Droplet extends BaseEntity {
+	@BeforeInsert()
+	init() {
+		this.upVoteCount = 0;
+		this.downVoteCount = 0;
+		this.replyCount = 0;
+	}
+
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
@@ -19,23 +26,19 @@ export class Droplet extends BaseEntity {
 	@Column({ type: 'datetime', default: () => 'date("now")' })
 	createdAt: string;
 
-	@Column({ type: 'int', default: () => 0 })
-	@IsInt()
+	@Column()
 	upVoteCount: number;
 
-	@Column({ type: 'int', default: () => 0 })
-	@IsInt()
+	@Column()
 	downVoteCount: number;
 
-	@Column({ type: 'int', default: () => 0 })
-	@IsInt()
+	@Column()
 	replyCount: number;
 
-	@Column({ type: 'boolean', default: () => false })
-	@IsBoolean()
+	@Column()
 	isReply: boolean;
 
-	@ManyToOne(() => User, user => user.id)
+	@OneToMany(() => User, user => user.id)
 	@IsString()
 	createdByUserId: string;
 }

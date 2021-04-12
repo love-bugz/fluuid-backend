@@ -41,6 +41,9 @@ const isUser: RequestHandler = async (req, _res, next) => {
 		} else if (path.includes('emailId') || req.method === 'DELETE') {
 			query = `users.emailId = :emailId`;
 			obj['emailId'] = req.params.emailId;
+		} else if (path.includes('droplets')) {
+			query = `users.id = :id`;
+			obj['id'] = req.body.createdByUserId;
 		}
 
 		const user = await getRepository(User).createQueryBuilder('users').where(query, obj).getOne();

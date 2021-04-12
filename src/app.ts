@@ -7,6 +7,7 @@ import { connect } from './api/db';
 
 // ROUTERS/CONTROLLERS
 import { UserRoutes } from './api/routes/User.routes';
+import { DropletRoutes } from './api/routes/Droplet.routes';
 
 // ERROR HANDLER
 import { errorHandler } from './api/services/errorHandler';
@@ -23,7 +24,7 @@ app.get('/', (_req, res) => {
 	res.send('<h1>Hello, Sanity test.</h1>');
 });
 
-const AppRoutes = [...UserRoutes];
+const AppRoutes = [...UserRoutes, ...DropletRoutes];
 
 AppRoutes.forEach(route => {
 	//@ts-ignore
