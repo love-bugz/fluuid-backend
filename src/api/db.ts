@@ -8,6 +8,7 @@ export const connect = async () => {
 		try {
 			await createConnection({
 				type: 'postgres',
+				name: 'default',
 				synchronize: false,
 				logging: true,
 				url: db_url,
@@ -31,7 +32,7 @@ export const connect = async () => {
 			await createConnection({
 				type: 'sqlite',
 				database: 'dev.db',
-				name: 'default',
+				name: 'dev',
 				synchronize: false,
 				logging: true,
 				migrationsTableName: 'custom_migration_table',
