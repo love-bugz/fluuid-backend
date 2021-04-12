@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { compose } from 'compose-middleware';
+import cors from 'cors';
 
 // DATABASE CONNECTION
 import { connect } from './api/db';
@@ -15,6 +16,7 @@ connect();
 // MIDDLEWARE
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.get('/', (_req, res) => {
 	console.log('Sanity test ran.');
@@ -35,5 +37,4 @@ AppRoutes.forEach(route => {
 
 // USE ERROR HANDLER
 app.use(errorHandler);
-
 export { app };
