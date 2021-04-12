@@ -7,5 +7,5 @@ export interface DropletType {
 	downVoteCount?: number;
 	replyCount?: number;
 	isReply?: boolean;
-	createdByUserId: string;
+	createdByUser: string;
 }

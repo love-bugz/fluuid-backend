@@ -9,7 +9,7 @@ function dropletCreationSchema() {
 	return Yup.object().shape({
 		title: Yup.string().strict(false).trim().required(),
 		audioTrack: Yup.string().strict(false).trim().required(),
-		createdByUserId: Yup.string().strict(false).trim().required(),
+		createdByUser: Yup.string().strict(false).trim().required(),
 		isReply: Yup.boolean().required(),
 	});
 }
@@ -26,4 +26,20 @@ const validateNewDroplet: RequestHandler = async (req, res, next) => {
 	}
 };
 
-export { validateNewDroplet };
+const isDroplet: RequestHandler = async (req, res, next) => {
+	try {
+		if (Object.keys(req.params).length === 0) throw new BadRequestError('Must include droplet id information');
+
+		const droplet = await getRepository(Droplet).findOne({ id: req.params.id });
+
+		if (!droplet) throw new NotFoundError('Droplet not found');
+		else {
+			req.droplet = droplet;
+			next();
+		}
+	} catch (err) {
+		next(err);
+	}
+};
+
+export { validateNewDroplet, isDroplet };

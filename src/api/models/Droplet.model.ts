@@ -1,5 +1,5 @@
-import { BaseEntity, BeforeInsert, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { IsString, Length, IsInt, IsUrl, IsBoolean } from 'class-validator';
+import { BaseEntity, BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { IsString, Length, IsUrl, IsBoolean } from 'class-validator';
 import { User } from './User.model';
 
 @Entity('droplets')

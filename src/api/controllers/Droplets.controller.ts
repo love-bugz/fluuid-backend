@@ -12,9 +12,9 @@ export class DropletController {
 	}
 
 	async createDroplet(req: Request, res: Response, next: NextFunction) {
-		const { createdByUserId, title, audioTrack, isReply } = req.body;
+		const { createdByUser, title, audioTrack, isReply } = req.body;
 		const droplet = new Droplet();
-		droplet.createdByUser = createdByUserId;
+		droplet.createdByUser = createdByUser;
 		droplet.title = title;
 		droplet.audioTrack = audioTrack;
 		droplet.isReply = isReply;
@@ -29,5 +29,14 @@ export class DropletController {
 		} catch (err) {
 			next(err);
 		}
+	}
+
+	async deleteDroplet(req: Request, res: Response) {
+		const droplet = new Droplet();
+		droplet.id = req.droplet.id;
+		droplet.createdByUser = req.droplet.createdByUser;
+
+		await dropletsRepo().remove(droplet);
+		res.status(200).json({ message: 'droplet deleted' });
 	}
 }
