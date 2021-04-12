@@ -14,9 +14,9 @@ export class User extends BaseEntity {
 	@Length(5, 25)
 	handle: string;
 
-	@Column({ type: 'datetime', default: () => 'date("now")' })
+	@Column({ type: 'timestamp', default: () => 'date("now")' })
 	createdAt: string;
 
-	@Column({ type: 'datetime', default: () => 'date("now")' })
+	@Column({ type: 'timestamp', default: () => 'date("now")' })
 	updatedAt: string;
 }
