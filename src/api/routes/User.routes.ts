@@ -13,19 +13,19 @@ const UserRoutes = [
 		middleware: [beginLoggingMW],
 	},
 	{
-		path: BASE_PATH + '/id/',
+		path: BASE_PATH + '/id/:id',
 		method: 'get',
 		action: new UserController().findById,
 		middleware: [beginLoggingMW, isUser],
 	},
 	{
-		path: BASE_PATH + '/emailId',
+		path: BASE_PATH + '/emailId/:emailId',
 		method: 'get',
 		action: new UserController().findByEmailId,
 		middleware: [beginLoggingMW, isUser],
 	},
 	{
-		path: BASE_PATH + '/handle/',
+		path: BASE_PATH + '/handle/:handle',
 		method: 'get',
 		action: new UserController().findByHandle,
 		middleware: [beginLoggingMW, isUser],
@@ -37,7 +37,7 @@ const UserRoutes = [
 		middleware: [beginLoggingMW, validateNewUser],
 	},
 	{
-		path: BASE_PATH + '/',
+		path: BASE_PATH + '/:emailId',
 		method: 'delete',
 		action: new UserController().deleteUser,
 		middleware: [beginLoggingMW, isUser],
