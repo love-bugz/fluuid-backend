@@ -37,12 +37,20 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 		if (key === 'errno') {
 			error = 'SQL Error';
 		}
+
+		if (key === 'statusCode') {
+			status = err[key];
+		}
+
+		if (key === 'message' && !message) {
+			message = err[key];
+		}
 	}
 
 	// @ts-ignore
-	status = status || err.statusCode || 500;
+	status = status || 500;
 	// @ts-ignore
-	message = message || err.message || 'Something went wrong';
+	message = message || 'Something went wrong';
 	// @ts-ignore
 	error = error || 'Undefined Error'; //change to "Undefined Error"
 
