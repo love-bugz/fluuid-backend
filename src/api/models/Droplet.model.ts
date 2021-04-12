@@ -1,4 +1,4 @@
-import { BaseEntity, BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, BeforeInsert, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsString, Length, IsInt, IsUrl, IsBoolean } from 'class-validator';
 import { User } from './User.model';
 
@@ -10,6 +10,7 @@ export class Droplet extends BaseEntity {
 		this.downVoteCount = 0;
 		this.replyCount = 0;
 	}
+
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
@@ -35,9 +36,10 @@ export class Droplet extends BaseEntity {
 	replyCount: number;
 
 	@Column()
+	@IsBoolean()
 	isReply: boolean;
 
-	@OneToMany(() => User, user => user.id)
+	@ManyToOne(() => User, user => user.id)
 	@IsString()
-	createdByUserId: string;
+	createdByUser: string;
 }
