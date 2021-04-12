@@ -14,11 +14,11 @@ export const connect = async () => {
 				ssl: { rejectUnauthorized: false },
 			},
 			migrationsTableName: 'custom_migration_table',
-			entities: [__dirname + '/models/*.model.js'],
-			migrations: [__dirname + '/migrations/*.js'],
+			entities: ['./dist/api/models/*.model.js'],
+			migrations: ['./dist/api/migrations/*.js'],
 			cli: {
-				entitiesDir: __dirname + './models/',
-				migrationsDir: __dirname + './migrations/',
+				entitiesDir: './dist/api/models/',
+				migrationsDir: './dist/api/migrations/',
 			},
 		});
 	} else {
