@@ -8,7 +8,7 @@
 		"eslint": "eslint --ext .js,.ts ./src/ --fix",
 		"clean-build": "rm -rf dist/ && tsc",
 		"build": "tsc",
-		"start": "npm run build && node dist/",
+		"start": "npm run build && node src/",
 		"server": "nodemon",
 		"migration:create": "typeorm migration:create",
 		"migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
